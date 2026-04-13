@@ -9,7 +9,7 @@ public class MemberReqDTO {
     public record RequestBody(
             String email,
             String password,
-            String Name,
+            String name,
             String gender,
             LocalDate birth,
             String address

@@ -1,4 +1,6 @@
 package com.example.umc10th.domain.member.dto;
 
-public class MemberResDTO {
-}
+public record MemberResDTO(
+        String name,
+        String email
+) {}
