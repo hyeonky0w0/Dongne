@@ -2,6 +2,7 @@ package com.example.umc10th.domain.mission.controller;
 
 import com.example.umc10th.domain.mission.dto.HomeResDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
+import com.example.umc10th.domain.mission.dto.MyMissionResDTO;
 import com.example.umc10th.domain.mission.entity.MissionStatus;
 import com.example.umc10th.domain.mission.service.MissionService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class MissionController {
     @GetMapping("/home/missions")
     public ResponseEntity<Page<MissionResDTO>> getMissions(
             @RequestParam Long memberId,
-            @RequestParam(required = false) MissionStatus status,
+            @RequestParam(defaultValue = "ONGOING") MissionStatus status,
             @RequestParam int page,
             @RequestParam int size
     ) {
@@ -41,6 +42,17 @@ public class MissionController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/my-missions")
+    public ResponseEntity<Page<MyMissionResDTO>> getMyMissions(
+            @RequestParam Long memberId,
+            @RequestParam(required = false) MissionStatus status,
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+        return ResponseEntity.ok(
+                missionService.getMyMissions(memberId, status, page, size)
+        );
+    }
 
 
 }
