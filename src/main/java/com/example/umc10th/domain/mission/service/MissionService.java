@@ -1,5 +1,6 @@
 package com.example.umc10th.domain.mission.service;
 
+import com.example.umc10th.domain.mission.dto.CompleteMissionResDTO;
 import com.example.umc10th.domain.mission.dto.HomeResDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.dto.MyMissionResDTO;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 public interface MissionService {
 
     HomeResDTO getHomeInfo(Long memberId);
+    CompleteMissionResDTO completeMission(Long myMissionId, Long memberId);
 
     Page<MissionResDTO> getMissions(
             Long memberId,
@@ -23,4 +25,6 @@ public interface MissionService {
             int page,
             int size
     );
+
+
 }

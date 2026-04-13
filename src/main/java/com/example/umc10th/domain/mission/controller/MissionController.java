@@ -1,5 +1,6 @@
 package com.example.umc10th.domain.mission.controller;
 
+import com.example.umc10th.domain.mission.dto.CompleteMissionResDTO;
 import com.example.umc10th.domain.mission.dto.HomeResDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.dto.MyMissionResDTO;
@@ -52,6 +53,18 @@ public class MissionController {
         return ResponseEntity.ok(
                 missionService.getMyMissions(memberId, status, page, size)
         );
+    }
+
+    // 미션 완료 처리
+    @PostMapping("/my-missions/{myMissionId}/complete")
+    public ResponseEntity<CompleteMissionResDTO> completeMission(
+            @PathVariable Long myMissionId,
+            @RequestParam Long memberId   // 임시
+    ) {
+        CompleteMissionResDTO response =
+                missionService.completeMission(myMissionId, memberId);
+
+        return ResponseEntity.ok(response);
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.umc10th.domain.mission.service;
 
+import com.example.umc10th.domain.mission.dto.CompleteMissionResDTO;
 import com.example.umc10th.domain.mission.dto.HomeResDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.dto.MyMissionResDTO;
@@ -30,5 +31,14 @@ public class MissionServiceImpl implements MissionService {
             int size
     ) {
         return Page.empty(); // 테스트용
+    }
+
+    @Override
+    public CompleteMissionResDTO completeMission(Long myMissionId, Long memberId) {
+        return new CompleteMissionResDTO(
+                myMissionId,
+                true,
+                100
+        );
     }
 }
