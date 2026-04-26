@@ -4,7 +4,7 @@ import com.example.umc10th.domain.mission.dto.CompleteMissionResDTO;
 import com.example.umc10th.domain.mission.dto.HomeResDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.dto.MyMissionResDTO;
-import com.example.umc10th.domain.mission.entity.MissionStatus;
+import com.example.umc10th.domain.mission.enums.MissionStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;

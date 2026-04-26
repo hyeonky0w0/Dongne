@@ -1,4 +1,4 @@
-package com.example.umc10th.domain.mission.entity;
+package com.example.umc10th.domain.mission.enums;
 
 public enum MissionStatus {
     ONGOING,
