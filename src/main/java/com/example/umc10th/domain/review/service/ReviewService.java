@@ -1,16 +1,13 @@
 package com.example.umc10th.domain.review.service;
 
 import com.example.umc10th.domain.review.dto.ReviewReqDTO;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
+import com.example.umc10th.domain.review.dto.ReviewResDTO;
+import com.example.umc10th.domain.review.entity.Review;
+import org.springframework.data.domain.Page;
 
 public interface ReviewService {
 
-    void createReview(
-            Long storeId,
-            Long memberId,
-            ReviewReqDTO request,
-            List<MultipartFile> images
-    );
-}
+    public ReviewResDTO createReview(Long storeId, Long memberId, ReviewReqDTO request);
+
+    Page<ReviewResDTO> getReviews(Long storeId, int page);
+};
