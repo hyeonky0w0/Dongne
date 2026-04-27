@@ -25,5 +25,14 @@ public class MemberController {
         );
     }
 
+    @GetMapping("/members/{memberId}")
+    public ResponseEntity<ApiResponse<MemberResDTO>> getMemberInfo(
+            @PathVariable Long memberId
+    ) {
+        return ResponseEntity.ok(
+                ApiResponse.onSuccess(memberService.getMemberInfo(memberId))
+        );
+    }
+
 
 }
