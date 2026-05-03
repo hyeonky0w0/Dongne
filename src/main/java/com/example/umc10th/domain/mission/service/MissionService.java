@@ -3,7 +3,7 @@ package com.example.umc10th.domain.mission.service;
 import com.example.umc10th.domain.mission.dto.CompleteMissionResDTO;
 import com.example.umc10th.domain.mission.dto.HomeResDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
-import com.example.umc10th.domain.mission.dto.MyMissionDTO;
+import com.example.umc10th.domain.mission.dto.MyMissionResDTO;
 import com.example.umc10th.domain.mission.enums.MissionStatus;
 import com.example.umc10th.global.dto.PageResponse;
 
@@ -21,7 +21,7 @@ public interface MissionService {
     );
 
     // 내 미션 목록
-    PageResponse<MyMissionDTO.Response> getMyMissions(
+    PageResponse<MyMissionResDTO.Response> getMyMissions(
             Long memberId,
             MissionStatus status,
             int page,

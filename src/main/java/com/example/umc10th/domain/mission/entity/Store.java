@@ -29,6 +29,7 @@ public class Store extends BaseEntity {
     private Integer number;
 
     @Column(name = "category", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)

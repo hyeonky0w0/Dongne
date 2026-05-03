@@ -7,7 +7,7 @@ import com.example.umc10th.domain.mission.converter.MissionConverter;
 import com.example.umc10th.domain.mission.dto.CompleteMissionResDTO;
 import com.example.umc10th.domain.mission.dto.HomeResDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
-import com.example.umc10th.domain.mission.dto.MyMissionDTO;
+import com.example.umc10th.domain.mission.dto.MyMissionResDTO;
 import com.example.umc10th.domain.mission.entity.mapping.MemberMission;
 import com.example.umc10th.domain.mission.enums.Address;
 import com.example.umc10th.domain.mission.enums.MissionStatus;
@@ -63,7 +63,7 @@ public class MissionServiceImpl implements MissionService {
 
 
     @Override
-    public PageResponse<MyMissionDTO.Response> getMyMissions(
+    public PageResponse<MyMissionResDTO.Response> getMyMissions(
             Long memberId,
             MissionStatus status,
             int page,

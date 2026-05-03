@@ -2,7 +2,7 @@ package com.example.umc10th.domain.mission.dto;
 
 import com.example.umc10th.domain.mission.enums.MissionStatus;
 
-public class MyMissionDTO {
+public class MyMissionResDTO {
 
     public record Response(
             String storeName,

@@ -19,5 +19,6 @@ public class Location {
     private Long id;
 
     @Column(name = "name", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Address name;
 }
