@@ -3,9 +3,9 @@ package com.example.umc10th.domain.mission.service;
 import com.example.umc10th.domain.mission.dto.CompleteMissionResDTO;
 import com.example.umc10th.domain.mission.dto.HomeResDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
-import com.example.umc10th.domain.mission.dto.MyMissionResDTO;
+import com.example.umc10th.domain.mission.dto.MyMissionDTO;
 import com.example.umc10th.domain.mission.enums.MissionStatus;
-import org.springframework.data.domain.Page;
+import com.example.umc10th.global.dto.PageResponse;
 
 public interface MissionService {
 
@@ -13,7 +13,7 @@ public interface MissionService {
     HomeResDTO getHomeInfo(Long memberId);
 
     // 홈 미션 목록 (지역 기반, 페이징, 상태 필터)
-    Page<MissionResDTO> getMissions(
+    PageResponse<MissionResDTO> getMissions(
             Long memberId,
             MissionStatus status,
             int page,
@@ -21,7 +21,7 @@ public interface MissionService {
     );
 
     // 내 미션 목록
-    Page<MyMissionResDTO> getMyMissions(
+    PageResponse<MyMissionDTO.Response> getMyMissions(
             Long memberId,
             MissionStatus status,
             int page,
@@ -30,5 +30,4 @@ public interface MissionService {
 
     // 미션 완료 처리
     CompleteMissionResDTO completeMission(Long myMissionId, Long memberId);
-
 }

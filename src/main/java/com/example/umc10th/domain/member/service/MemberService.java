@@ -14,7 +14,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public MemberResDTO createMember(MemberReqDTO.RequestBody dto) {
+    public MemberResDTO createMember(MemberReqDTO.SignUpRequest dto){
 
         if (memberRepository.existsByEmail(dto.email())) {
             throw new RuntimeException("이미 존재하는 이메일");
