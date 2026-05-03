@@ -11,8 +11,8 @@ public class ReviewConverter {
 
     public static Review toEntity(ReviewReqDTO request, Store store, Member member) {
         return Review.builder()
-                .content(request.getReviewContent())
-                .star(request.getStarRating())
+                .content(request.reviewContent())
+                .star(request.starRating())
                 .store(store)
                 .member(member)
                 .build();
@@ -23,7 +23,7 @@ public class ReviewConverter {
                 review.getMember().getName(),
                 review.getContent(),
                 review.getStar(),
-                review.getCretedAt()
+                review.getCreatedAt()
         );
     }
 }

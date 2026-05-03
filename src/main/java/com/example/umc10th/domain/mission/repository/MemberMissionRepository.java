@@ -12,6 +12,13 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
 
     Page<MemberMission> findByMemberId(Long memberId, Pageable pageable);
 
+    @Query("SELECT mm FROM MemberMission mm WHERE mm.member.id = :memberId AND (:isComplete IS NULL OR mm.isComplete = :isComplete)")
+    Page<MemberMission> findByMemberIdAndStatus(
+            @Param("memberId") Long memberId,
+            @Param("isComplete") Boolean isComplete,
+            Pageable pageable
+    );
+
     @Query("SELECT COUNT(mm) FROM MemberMission mm WHERE mm.member.id = :memberId AND mm.isComplete = true")
     int countCompletedByMemberId(@Param("memberId") Long memberId);
 

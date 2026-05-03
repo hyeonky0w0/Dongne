@@ -4,7 +4,9 @@ import com.example.umc10th.domain.review.dto.ReviewReqDTO;
 import com.example.umc10th.domain.review.dto.ReviewResDTO;
 import com.example.umc10th.domain.review.service.ReviewService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,16 +20,13 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping("/store/{storeId}/reviews")
-    public ResponseEntity<ApiResponse<ReviewResDTO>> createReview(
+    public ResponseEntity<?> createReview(
             @PathVariable Long storeId,
-            @RequestBody ReviewReqDTO request,
+            @RequestBody @Valid ReviewReqDTO request,
             @RequestParam Long memberId
     ) {
-        return ResponseEntity.ok(
-                ApiResponse.onSuccess(
-                        reviewService.createReview(storeId, memberId, request)
-                )
-        );
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ApiResponse.onSuccess(reviewService.createReview(storeId, memberId, request)));
     }
 }

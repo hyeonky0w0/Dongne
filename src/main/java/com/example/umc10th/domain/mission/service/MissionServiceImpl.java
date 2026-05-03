@@ -1,6 +1,7 @@
 package com.example.umc10th.domain.mission.service;
 
 import com.example.umc10th.domain.member.entity.Member;
+import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.MemberRepository;
 import com.example.umc10th.domain.mission.converter.MissionConverter;
 import com.example.umc10th.domain.mission.dto.CompleteMissionResDTO;
@@ -10,7 +11,9 @@ import com.example.umc10th.domain.mission.dto.MyMissionDTO;
 import com.example.umc10th.domain.mission.entity.mapping.MemberMission;
 import com.example.umc10th.domain.mission.enums.Address;
 import com.example.umc10th.domain.mission.enums.MissionStatus;
+import com.example.umc10th.domain.mission.exception.code.MissionErrorCode;
 import com.example.umc10th.domain.mission.repository.MemberMissionRepository;
+import com.example.umc10th.global.apiPayload.exception.ProjectException;
 import com.example.umc10th.global.dto.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +33,7 @@ public class MissionServiceImpl implements MissionService {
     @Override
     public HomeResDTO getHomeInfo(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 멤버입니다."));
+                .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         int completedCount = memberMissionRepository.countCompletedByMemberId(memberId);
 
@@ -45,7 +48,7 @@ public class MissionServiceImpl implements MissionService {
             int size
     ) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 멤버입니다."));
+                .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         Address address = member.getAddress();
         Pageable pageable = PageRequest.of(page, size);
@@ -67,29 +70,29 @@ public class MissionServiceImpl implements MissionService {
             int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<MemberMission> result = memberMissionRepository.findByMemberId(memberId, pageable);
 
-        Page<MyMissionDTO.Response> mapped = result
-                .map(MissionConverter::toMyMissionDTO)
-                .map(dto -> (status == null || dto.status() == status) ? dto : null);
+        Boolean isComplete = (status == null) ? null : (status == MissionStatus.COMPLETED);
 
-        return PageResponse.from(mapped);
+        Page<MemberMission> result = memberMissionRepository
+                .findByMemberIdAndStatus(memberId, isComplete, pageable);
+
+        return PageResponse.from(result.map(MissionConverter::toMyMissionDTO));
     }
 
     @Override
     @Transactional
     public CompleteMissionResDTO completeMission(Long myMissionId, Long memberId) {
         MemberMission mm = memberMissionRepository.findById(myMissionId)
-                .orElseThrow(() -> new IllegalArgumentException("미션을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(MissionErrorCode.MISSION_NOT_FOUND));
 
         if (!mm.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("본인의 미션만 완료할 수 있습니다.");
+            throw new ProjectException(MissionErrorCode.MISSION_UNAUTHORIZED);
         }
         if (mm.isComplete()) {
-            throw new IllegalStateException("이미 완료된 미션입니다.");
+            throw new ProjectException(MissionErrorCode.MISSION_ALREADY_COMPLETED);
         }
 
-        mm.complete();
+        mm.markAsCompleted();
 
         return new CompleteMissionResDTO(
                 mm.getId(),
