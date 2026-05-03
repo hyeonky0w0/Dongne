@@ -53,7 +53,6 @@ public class GeneralExceptionAdvice {
             HttpMessageNotReadableException e
     ) {
         log.warn("[JsonParseException] {}", e.getMessage());
-
         BaseErrorCode code = GeneralErrorCode.BAD_REQUEST;
         return ResponseEntity
                 .status(code.getStatus())
@@ -66,7 +65,6 @@ public class GeneralExceptionAdvice {
             MaxUploadSizeExceededException e
     ) {
         log.warn("[MaxUploadSizeExceededException] {}", e.getMessage());
-
         BaseErrorCode code = GeneralErrorCode.BAD_REQUEST;
         return ResponseEntity
                 .status(code.getStatus())
@@ -76,8 +74,7 @@ public class GeneralExceptionAdvice {
     // 그 외 모든 예외 — 내부 메시지 노출 없이 로그로만 처리
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<String>> handleException(Exception e) {
-        log.error("[UnhandledException] {}", e.getMessage(), e);  // 스택트레이스 포함 로깅
-
+        log.error("[UnhandledException] {}", e.getMessage(), e);
         BaseErrorCode code = GeneralErrorCode.INTERNAL_SERVER_ERROR;
         return ResponseEntity
                 .status(code.getStatus())
