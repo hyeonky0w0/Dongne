@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:file:.env   # ⭐ 이거 추가
+    import: optional:file:.env
 
   application:
     name: "umc10th"

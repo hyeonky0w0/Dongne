@@ -61,30 +61,33 @@ public class ReviewServiceImpl implements ReviewService {
     public CursorPageResponse<ReviewResDTO.ReviewItem> getMyReviews(
             ReviewReqDTO.CursorRequest request
     ) {
-        // size + 1개 가져와서 hasNext 판단
         Pageable pageable = PageRequest.of(0, request.size() + 1);
 
         List<Review> reviews;
 
         if (request.sortType() == ReviewReqDTO.SortType.STAR_DESC) {
+            Double cursorStar = parseCursorStar(request.cursor());
+            Long cursorId = parseCursorId(request.cursor());
+
             reviews = reviewRepository.findByMemberIdOrderByStar(
                     request.memberId(),
-                    request.cursorStar(),
-                    request.cursorId() != null ? request.cursorId() : Long.MAX_VALUE,
+                    cursorStar,
+                    cursorId != null ? cursorId : Long.MAX_VALUE,
                     pageable
             );
         } else {
-            // ID_DESC (기본)
+            Long cursorId = request.cursor() != null
+                    ? Long.parseLong(request.cursor())
+                    : null;
+
             reviews = reviewRepository.findByMemberIdOrderById(
                     request.memberId(),
-                    request.cursorId(),
+                    cursorId,
                     pageable
             );
         }
 
         boolean hasNext = reviews.size() > request.size();
-
-        // hasNext면 마지막 초과분 제거
         List<Review> content = hasNext
                 ? reviews.subList(0, request.size())
                 : reviews;
@@ -93,16 +96,36 @@ public class ReviewServiceImpl implements ReviewService {
                 .map(ReviewConverter::toReviewItem)
                 .toList();
 
-        // 다음 커서값 = 마지막 항목 기준
         Long nextCursorId = hasNext ? content.get(content.size() - 1).getId() : null;
 
         if (request.sortType() == ReviewReqDTO.SortType.STAR_DESC) {
-            Double nextCursorStar = hasNext
-                    ? (double) content.get(content.size() - 1).getStar()
+            String nextCursor = hasNext
+                    ? buildStarCursor(content.get(content.size() - 1))
                     : null;
-            return CursorPageResponse.ofStar(items, nextCursorId, nextCursorStar, hasNext);
+            return CursorPageResponse.ofStar(items, nextCursor, hasNext);
         }
 
-        return CursorPageResponse.ofId(items, nextCursorId, hasNext);
+
+        String nextCursor = nextCursorId != null ? String.valueOf(nextCursorId) : null;
+        return CursorPageResponse.ofId(items, nextCursor, hasNext);
+    }
+
+
+    private static final String CURSOR_DELIMITER = "_";
+
+    private Double parseCursorStar(String cursor) {
+        if (cursor == null) return null;
+        String[] parts = cursor.split(CURSOR_DELIMITER);
+        return parts.length >= 1 ? Double.parseDouble(parts[0]) : null;
+    }
+
+    private Long parseCursorId(String cursor) {
+        if (cursor == null) return null;
+        String[] parts = cursor.split(CURSOR_DELIMITER);
+        return parts.length >= 2 ? Long.parseLong(parts[1]) : null;
+    }
+
+    private String buildStarCursor(Review review) {
+        return review.getStar() + CURSOR_DELIMITER + review.getId();
     }
 }

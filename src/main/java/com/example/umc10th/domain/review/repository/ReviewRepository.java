@@ -29,15 +29,15 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     // 별점 기반 커서 (별점 높은 순, 같으면 ID 최신순)
     @Query("""
-        SELECT r FROM Review r
-        WHERE r.member.id = :memberId
-        AND (
-            :cursorStar IS NULL
-            OR r.star < :cursorStar
-            OR (r.star = :cursorStar AND r.id < :cursorId)
-        )
-        ORDER BY r.star DESC, r.id DESC
-    """)
+    SELECT r FROM Review r
+    WHERE r.member.id = :memberId
+    AND (
+        :cursorStar IS NULL
+        OR r.star < :cursorStar
+        OR (r.star = :cursorStar AND r.id < :cursorId)
+    )
+    ORDER BY r.star DESC, r.id DESC
+""")
     List<Review> findByMemberIdOrderByStar(
             @Param("memberId") Long memberId,
             @Param("cursorStar") Double cursorStar,

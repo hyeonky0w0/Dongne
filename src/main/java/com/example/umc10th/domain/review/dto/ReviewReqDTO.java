@@ -20,8 +20,7 @@ public class ReviewReqDTO {
                 @NotNull(message = "사용자 ID는 필수입니다.")
                 Long memberId,
 
-                Long cursorId,      // null이면 처음부터
-                Double cursorStar,  // 별점 정렬 시 사용
+                String cursor,
 
                 @NotNull(message = "정렬 기준은 필수입니다.")
                 SortType sortType,

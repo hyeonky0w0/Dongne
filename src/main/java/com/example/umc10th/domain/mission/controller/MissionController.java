@@ -6,6 +6,8 @@ import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import com.example.umc10th.global.dto.PageResponse;   // ✅ 추가
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,21 +42,20 @@ public class MissionController {
         );
     }
 
-    @PostMapping("/my-missions/search")
+    @GetMapping("/members/{memberId}/my-missions")
     public ResponseEntity<ApiResponse<PageResponse<MyMissionResDTO.Response>>> getMyMissions(
-            @RequestBody @Valid MyMissionReqDTO.PageRequest request
+            @PathVariable Long memberId,
+            @RequestParam(defaultValue = "ALL") MissionStatus status,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(50) int size
     ) {
         return ResponseEntity.ok(
                 ApiResponse.onSuccess(
-                        missionService.getMyMissions(
-                                request.memberId(),
-                                request.status(),
-                                request.page(),
-                                request.size()
-                        )
+                        missionService.getMyMissions(memberId, status, page, size)
                 )
         );
     }
+
 
     @PostMapping("/my-missions/{myMissionId}/complete")
     public ResponseEntity<ApiResponse<CompleteMissionResDTO>> completeMission(

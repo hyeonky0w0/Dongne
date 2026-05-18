@@ -4,26 +4,16 @@ import java.util.List;
 
 public record CursorPageResponse<T>(
         List<T> content,
-        Long nextCursorId,
-        Double nextCursorStar,
+        String nextCursor,   // ← "3.5_42" 또는 "42" 또는 null
         boolean hasNext
 ) {
-    // ID 기반 커서
-    public static <T> CursorPageResponse<T> ofId(
-            List<T> content,
-            Long nextCursorId,
-            boolean hasNext
-    ) {
-        return new CursorPageResponse<>(content, nextCursorId, null, hasNext);
+    public static <T> CursorPageResponse<T> ofStar(
+            List<T> content, String nextCursor, boolean hasNext) {
+        return new CursorPageResponse<>(content, nextCursor, hasNext);
     }
 
-    // 별점 기반 커서
-    public static <T> CursorPageResponse<T> ofStar(
-            List<T> content,
-            Long nextCursorId,
-            Double nextCursorStar,
-            boolean hasNext
-    ) {
-        return new CursorPageResponse<>(content, nextCursorId, nextCursorStar, hasNext);
+    public static <T> CursorPageResponse<T> ofId(
+            List<T> content, String nextCursor, boolean hasNext) {
+        return new CursorPageResponse<>(content, nextCursor, hasNext);
     }
 }
