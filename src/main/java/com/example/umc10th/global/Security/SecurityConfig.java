@@ -36,13 +36,9 @@ public class SecurityConfig {
                         .requestMatchers(allowUris).permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        .defaultSuccessUrl("/swagger-ui/index.html", true)
-                        .permitAll()
-                )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutUrl("/api/auth/logout")
+                        .logoutSuccessUrl("/api/auth/login")
                         .permitAll()
                 )
                 .exceptionHandling(exception -> exception
@@ -52,7 +48,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {

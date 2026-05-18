@@ -7,6 +7,7 @@ public class MemberConverter {
 
     public static MemberResDTO toDTO(Member member) {
         return new MemberResDTO(
+                member.getId(),
                 member.getName(),
                 member.getEmail(),
                 member.getPhoneNumber(),

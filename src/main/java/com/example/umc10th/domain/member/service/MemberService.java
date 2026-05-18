@@ -48,4 +48,15 @@ public class MemberService {
 
         return MemberConverter.toDTO(member);
     }
+
+    public MemberResDTO login(MemberReqDTO.LoginRequest dto) {
+        Member member = memberRepository.findByEmail(dto.email())
+                .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(dto.password(), member.getPassword())) {
+            throw new ProjectException(MemberErrorCode.INVALID_PASSWORD);
+        }
+
+        return MemberConverter.toDTO(member);
+    }
 }
