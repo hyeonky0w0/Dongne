@@ -18,6 +18,10 @@ public class MemberReqDTO {
             @Email(message = "이메일 형식이 올바르지 않습니다.")
             String email,
 
+            @NotBlank(message = "비밀번호는 필수입니다.")
+            @Size(min = 8, message = "비밀번호는 최소 8자 이상이어야 합니다.")
+            String password,
+
             @NotBlank(message = "전화번호는 필수입니다.")
             @Pattern(regexp = "^\\d{10,11}$", message = "전화번호는 10~11자리 숫자여야 합니다.")
             String phoneNumber,
@@ -35,7 +39,7 @@ public class MemberReqDTO {
             @Size(max = 100, message = "상세 주소는 최대 100자입니다.")
             String detailAddress,
 
-            @NotNull(message = "소셜 타입은 필수입니다.")
+            String socialUid,
             SocialType socialType
 
     ) {}

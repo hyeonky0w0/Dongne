@@ -8,6 +8,7 @@ import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.MemberRepository;
 import com.example.umc10th.global.apiPayload.exception.ProjectException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public MemberResDTO createMember(MemberReqDTO.SignUpRequest dto) {
 
@@ -25,12 +27,14 @@ public class MemberService {
         Member member = Member.builder()
                 .name(dto.name())
                 .email(dto.email())
+                .password(passwordEncoder.encode(dto.password())) // BCrypt 암호화
                 .phoneNumber(dto.phoneNumber())
                 .point(0)
                 .gender(dto.gender())
                 .birth(dto.birth())
                 .address(dto.address())
                 .detailAddress(dto.detailAddress())
+                .socialUid(dto.socialUid())
                 .socialType(dto.socialType())
                 .build();
 
