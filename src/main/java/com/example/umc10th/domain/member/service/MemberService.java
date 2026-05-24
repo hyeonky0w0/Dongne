@@ -6,6 +6,8 @@ import com.example.umc10th.domain.member.dto.MemberResDTO;
 import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.MemberRepository;
+import com.example.umc10th.global.Security.entity.AuthMember;
+import com.example.umc10th.global.Security.util.JwtUtil;
 import com.example.umc10th.global.apiPayload.exception.ProjectException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,27 +19,20 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public MemberResDTO createMember(MemberReqDTO.SignUpRequest dto) {
-
         if (memberRepository.existsByEmail(dto.email())) {
             throw new ProjectException(MemberErrorCode.EMAIL_ALREADY_EXISTS);
         }
-
         Member member = Member.builder()
-                .name(dto.name())
-                .email(dto.email())
-                .password(passwordEncoder.encode(dto.password())) // BCrypt 암호화
-                .phoneNumber(dto.phoneNumber())
-                .point(0)
-                .gender(dto.gender())
-                .birth(dto.birth())
-                .address(dto.address())
-                .detailAddress(dto.detailAddress())
-                .socialUid(dto.socialUid())
-                .socialType(dto.socialType())
+                .name(dto.name()).email(dto.email())
+                .password(passwordEncoder.encode(dto.password()))
+                .phoneNumber(dto.phoneNumber()).point(0)
+                .gender(dto.gender()).birth(dto.birth())
+                .address(dto.address()).detailAddress(dto.detailAddress())
+                .socialUid(dto.socialUid()).socialType(dto.socialType())
                 .build();
-
         memberRepository.save(member);
         return MemberConverter.toDTO(member);
     }
@@ -45,18 +40,21 @@ public class MemberService {
     public MemberResDTO getMemberInfo(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
-
         return MemberConverter.toDTO(member);
     }
 
-    public MemberResDTO login(MemberReqDTO.LoginRequest dto) {
+    // JWT 토큰
+    public MemberResDTO.Login login(MemberReqDTO.LoginRequest dto) {
         Member member = memberRepository.findByEmail(dto.email())
                 .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
-
         if (!passwordEncoder.matches(dto.password(), member.getPassword())) {
             throw new ProjectException(MemberErrorCode.INVALID_PASSWORD);
         }
+        String accessToken = jwtUtil.createAccessToken(new AuthMember(member));
+        return MemberConverter.toLogin(accessToken);
+    }
 
-        return MemberConverter.toDTO(member);
+    public MemberResDTO.GetInfo getInfo(AuthMember member) {
+        return MemberConverter.toGetInfo(member.getMember());
     }
 }

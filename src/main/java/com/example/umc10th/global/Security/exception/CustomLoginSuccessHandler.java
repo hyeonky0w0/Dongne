@@ -1,4 +1,4 @@
-package com.example.umc10th.global.Security;
+package com.example.umc10th.global.Security.exception;
 
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,15 +1,12 @@
 package com.example.umc10th.domain.mission.entity;
 
-import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.mission.enums.Category;
-import com.example.umc10th.global.BaseEntity;
+import com.example.umc10th.global.Security.exception.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Entity
 @Getter

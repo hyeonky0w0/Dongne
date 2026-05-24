@@ -3,7 +3,7 @@ package com.example.umc10th.domain.member.entity;
 import com.example.umc10th.domain.member.enums.Gender;
 import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.domain.mission.enums.Address;
-import com.example.umc10th.global.BaseEntity;
+import com.example.umc10th.global.Security.exception.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,31 +27,31 @@ public class Member extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = true)
     private String email;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender", nullable = true)
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Gender gender = Gender.NONE;
 
-    @Column(name = "birth", nullable = false)
+    @Column(name = "birth", nullable = true)
     private LocalDate birth;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number", nullable = true)
     private String phoneNumber;
 
-    @Column(name = "point", nullable = false)
+    @Column(name = "point", nullable = true)
     private Integer point;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address", nullable = true)
     @Enumerated(EnumType.STRING)
     private Address address;
 
-    @Column(name = "detail_address", nullable = false)
+    @Column(name = "detail_address", nullable = true)
     private String detailAddress;
 
     @Column(name = "social_uid")

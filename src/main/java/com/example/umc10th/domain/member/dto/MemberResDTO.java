@@ -6,4 +6,9 @@ public record MemberResDTO(
         String email,
         String phoneNumber,
         Integer point
-) {}
+) {
+    public record GetInfo(Long id, String name, String email) {}
+    public record Login(String accessToken) {}
+}
+
+
