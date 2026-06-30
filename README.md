@@ -1,19 +1,27 @@
-## 🔮 SSWU 10th UMC Spring Boot Junior
+## 🚀 배포 및 인프라 아키텍처 (Deployment & Infrastructure)
 
-성신여대 스프링부트 스터디 주니어 레포지토리입니다. 
+GCP(Google Cloud Platform)의 서버리스 및 관리형 인프라를 활용하여 자동화된 프로덕션 환경을 구축 
 
-### 💻 Github 미션 제출 방식
+AWS의 수동 인프라 설정 방식(EC2, Nginx, ALB 등)을 구조적으로 단순화하고 보안성과 확장성을 극대화
 
-1. 개인 메인 브랜치를 생성한다. 형식: [닉네임]
-2. 주차별 작업 브랜치를 생성한다. 형식: [닉네임]/week01
-3. 작업 브랜치에서 미션 완료 후, 개인 메인 브랜치로 PR을 보낸다. 
 
-### ‼️ PR 규칙
+### 🏗️ Infrastructure Architecture
+* **Frontend Entrypoint:** Cloud Load Balancing (무료 관리형 HTTPS/SSL 자동 적용)
+* **Application Layer:** GCP Cloud Run (Knative 기반 컨테이너 서버리스 오케스트레이션)
+* **Database Layer:** GCP Cloud SQL (MySQL 8.0, 구글 내부망 소켓 통신을 통한 인터넷 격리 보호)
+* **CI/CD Pipeline:** GitHub ➡️ Cloud Build ➡️ Artifact Registry ➡️ Cloud Run 무중단 배포
 
-- 네이밍 규칙 준수 ex) [닉네임] Week01 미션 제출
-- 작업별로 중간중간 Commit하기 ex) [FEAT] Entity 생성
 
-### 🤔 작업 진행 방식
+---
 
-- 지난 주 미션 PR : 피드백 사항을 최대한 수정한 후에 PR Merge, 수정 사항이 많을 경우 Merge 하고 진행 
-- 이번 주 미션 PR : 지난 주 PR을 Merge하고, 새로운 작업 브랜치를 파고 진행, 저번 주 브랜치 삭제 권장
+### 🔄 CI/CD 배포 프로세스
+완전 자동화된 지속적 통합 및 배포(CI/CD) 파이프라인이 구축
+
+```text
+[Local IntelliJ] ──(git push)──> [GitHub Repo]
+                                      │
+                                      ▼ (Webhook Trigger)
+                                 [Cloud Build] ──(Dockerfile 빌드)──> [Artifact Registry]
+                                                                             │
+                                                                             ▼ (무중단 교체)
+                                                                      [GCP Cloud Run]
