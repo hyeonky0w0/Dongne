@@ -31,8 +31,8 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok'
     implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 
-    // GCP Cloud SQL
-    implementation 'com.google.cloud.sql:mysql-socket-factory-connector-j:1.15.1'
+    // GCP Cloud SQL MySQL Socket Factory (GCP 공식 인증 정식 명칭)
+    implementation 'com.google.cloud.sql:mysql-socket-factory-connector-j-8:1.15.1'
 
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1'
