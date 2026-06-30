@@ -1,5 +1,5 @@
 # ==========================================
-# 1단계: 빌드 스테이지 (Gradle을 이용해 코드를 컴파일합니다)
+# 1단계: 빌드 스테이지
 # ==========================================
 FROM gradle:7.6-jdk17 AS builder
 WORKDIR /app
@@ -7,16 +7,18 @@ WORKDIR /app
 # 소스코드를 컨테이너 내부로 복사
 COPY . .
 
-# Gradle을 이용해 테스트는 제외하고 실행 가능한 .jar 파일 빌드
+# ⭐ [추가] gradlew 파일에 리눅스 실행 권한(+x)을 강제로 부여합니다.
+RUN chmod +x ./gradlew
+
+# 이제 권한 막힘 없이 정상적으로 컴파일이 진행됩니다.
 RUN ./gradlew bootJar -x test
 
 # ==========================================
-# 2단계: 실행 스테이지 (빌드된 결과물만 가져와서 실행합니다)
+# 2단계: 실행 스테이지
 # ==========================================
 FROM gcr.io/distroless/java17-debian11
 WORKDIR /app
 
-# 1단계(builder)에서 생성된 진짜 .jar 파일만 쏙 빼와서 복사합니다.
 COPY --from=builder /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
