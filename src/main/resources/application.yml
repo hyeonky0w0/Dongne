@@ -8,6 +8,7 @@ spring:
     username: ${DB_USER}
     password: ${DB_PW}
 
+
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
@@ -18,20 +19,18 @@ spring:
       hibernate:
         format_sql: true
 
-
   security:
     oauth2:
       client:
         registration:
           kakao:
-            client-id: ${KAKAO_CLIENT_ID}
-            client-secret: ${KAKAO_CLIENT_SECRET}
+            client-id: ${KAKAO_CLIENT_ID:임시값}
+            client-secret: ${KAKAO_CLIENT_SECRET:임시값}
             redirect-uri: "{baseUrl}/oauth/callback/kakao"
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope:
               - profile_nickname
-              # - account_email
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -41,6 +40,6 @@ spring:
 
 jwt:
   token:
-    secret-key: ${JWT_SECRET_KEY}
+    secret-key: ${JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz}
     expiration:
-      access: 1800000 # 30분
+      access: 1800000
