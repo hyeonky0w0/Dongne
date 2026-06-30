@@ -1,12 +1,23 @@
-# 1. 구글이 직접 관리하여 100% 신뢰할 수 있는 공식 오픈JDK 17 이미지로 교체합니다.
+# ==========================================
+# 1단계: 빌드 스테이지 (Gradle을 이용해 코드를 컴파일합니다)
+# ==========================================
+FROM gradle:7.6-jdk17 AS builder
+WORKDIR /app
+
+# 소스코드를 컨테이너 내부로 복사
+COPY . .
+
+# Gradle을 이용해 테스트는 제외하고 실행 가능한 .jar 파일 빌드
+RUN ./gradlew bootJar -x test
+
+# ==========================================
+# 2단계: 실행 스테이지 (빌드된 결과물만 가져와서 실행합니다)
+# ==========================================
 FROM gcr.io/distroless/java17-debian11
+WORKDIR /app
 
-# 2. 빌드된 jar 파일을 컨테이너 내부로 복사
-ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} app.jar
+# 1단계(builder)에서 생성된 진짜 .jar 파일만 쏙 빼와서 복사합니다.
+COPY --from=builder /app/build/libs/*.jar app.jar
 
-# 3. 포트 지정
 EXPOSE 8080
-
-# 4. 앱 실행 명령어
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
