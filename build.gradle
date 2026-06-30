@@ -29,7 +29,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
-    implementation 'me.paulschwarz:spring-dotenv:4.0.0'
+    //implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 
     // GCP Cloud SQL MySQL Socket Factory (GCP 공식 인증 정식 명칭)
     implementation 'com.google.cloud.sql:mysql-socket-factory-connector-j-8:1.15.1'
